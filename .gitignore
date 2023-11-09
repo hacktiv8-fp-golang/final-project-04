@@ -1,0 +1,41 @@
+# Compiled Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Compiled test binaries
+*.test
+
+# Compiled output
+*.out
+
+# Ignore the vendor directory if you're using Go Modules
+/vendor/
+
+# Ignore the bin directory
+/bin/
+
+# Ignore editor-specific files and directories
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore temporary files or directories
+/tmp/
+/temp/
+
+# Ignore log files or debugging output
+*.log
+
+# Ignore configuration files containing secrets or sensitive data
+/config.yaml
+/secrets.json
+
+# Ignore IDE or editor configuration files
+.editorconfig
+
+# Ignore environment files (e.g., .env) if not used in the project
+.env
