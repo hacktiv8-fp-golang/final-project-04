@@ -20,5 +20,14 @@ func StartServer() {
 		userRouter.PATCH("/topup", controller.UpdateBalance)
 	}
 
+	categoriesRouter := router.Group("/categories")
+	{
+		categoriesRouter.Use(middleware.Authentication())
+		categoriesRouter.POST("/",middleware.Authorization(), controller.CreateCategory)
+		categoriesRouter.GET("/")
+		categoriesRouter.PATCH("/:categoryId")
+		categoriesRouter.DELETE("/:categoryId")
+	}
+
 	router.Run(PORT)
 }
