@@ -25,7 +25,7 @@ func CreateCategory(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
+	context.JSON(http.StatusCreated, gin.H{
 		"id": categoryResponse.ID,
 		"type": categoryResponse.Type,
 		"sold_product_amount": categoryResponse.SoldProductAmount,

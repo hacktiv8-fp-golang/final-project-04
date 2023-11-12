@@ -29,5 +29,14 @@ func StartServer() {
 		categoriesRouter.DELETE("/:categoryId")
 	}
 
+	productsRouter := router.Group("/products")
+	{
+		productsRouter.Use(middleware.Authentication())
+		productsRouter.POST("/", middleware.Authorization(), controller.CreateProduct)
+		productsRouter.GET("/")
+		productsRouter.PUT("/:productId")
+		productsRouter.DELETE("/:productId")
+	}
+
 	router.Run(PORT)
 }

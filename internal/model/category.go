@@ -8,6 +8,7 @@ type Category struct {
 	SoldProductAmount int `json:"sold_product_amount"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Products []Product
 }
 
 type CategoryUpdate struct {

@@ -9,6 +9,7 @@ import (
 type categoryDomainRepo interface {
 	CreateCategory(*model.Category) (*model.Category, helper.Error)
 	UpdateCategory(*model.CategoryUpdate, int) (*model.Category, helper.Error)
+	IsCategoryExist(int) bool
 }
 
 type categoryRepo struct{}
@@ -41,4 +42,14 @@ func (c *categoryRepo) UpdateCategory(categoryUpdated *model.CategoryUpdate, cat
 	db.Model(&category).Updates(categoryUpdated)
 
 	return &category, nil
+}
+
+func (c *categoryRepo) IsCategoryExist(categoryId int) bool {
+	db := database.GetDB()
+
+	var category model.Category
+
+	err := db.First(&category, categoryId).Error
+
+	return err == nil
 }
