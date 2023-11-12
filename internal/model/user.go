@@ -8,7 +8,7 @@ type User struct {
 	Email string `gorm:"not null;uniqueIndex" json:"email" form:"email" valid:"required~Your email is required, email~Invalid email format"`
 	Password string `gorm:"not null" json:"password" form:"password" valid:"required~Your password is required,minstringlength(6)~Password has to have a minimum length of 6 characters"`
 	Role string `gorm:"not null" json:"role" valid:"matches(admin|customer)"`
-	Balance int `gorm:"not null" json:"balance" valid:"range(0|100000000)~Balance must not be less than 0 and not greater than 100,000,000"`
+	Balance int `gorm:"not null" json:"balance" valid:"range(0|100000000)"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
@@ -16,4 +16,8 @@ type User struct {
 type LoginCredential struct {
 	Email string `gorm:"not null;uniqueIndex" json:"email" form:"email" valid:"required~Your email is required, email~Invalid email format"`
 	Password string `gorm:"not null" json:"password" form:"password" valid:"required~Your password is required,minstringlength(6)~Password has to have a minimum length of 6 characters"`
+}
+
+type BalanceUpdate struct {
+	Balance int `gorm:"not null" json:"balance" valid:"range(0|100000000)"`
 }

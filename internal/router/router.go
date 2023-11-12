@@ -2,6 +2,7 @@ package router
 
 import (
 	"final-project-04/internal/controller"
+	"final-project-04/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +16,8 @@ func StartServer() {
 	{
 		userRouter.POST("/register", controller.Register)
 		userRouter.POST("/login", controller.Login)
+		userRouter.Use(middleware.Authentication())
+		userRouter.PATCH("/topup", controller.UpdateBalance)
 	}
 
 	router.Run(PORT)

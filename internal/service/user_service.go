@@ -11,6 +11,7 @@ import (
 type userServiceRepo interface {
 	Register(*model.User) (*model.User, helper.Error)
 	Login(*model.LoginCredential) (string, helper.Error)
+	UpdateBalance(*model.BalanceUpdate, int) (int, helper.Error)
 }
 
 type userService struct{}
@@ -61,4 +62,18 @@ func (u *userService) Login(userLogin *model.LoginCredential) (string, helper.Er
 	}
 
 	return token, nil
+}
+
+func (u *userService) UpdateBalance(balance *model.BalanceUpdate, userId int) (int, helper.Error) {
+	if _, err := govalidator.ValidateStruct(balance); err != nil {
+		return 0, helper.BadRequest(err.Error())
+	}
+
+	updatedBalance, err := repository.UserRepo.UpdateBalance(balance.Balance, userId)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return updatedBalance, nil
 }

@@ -4,8 +4,10 @@ import (
 	"final-project-04/internal/helper"
 	"final-project-04/internal/model"
 	"final-project-04/internal/service"
+	"fmt"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -54,4 +56,28 @@ func Login(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+func UpdateBalance(context *gin.Context) {
+	var balance model.BalanceUpdate
+
+	if err := context.ShouldBindJSON(&balance); err != nil {
+		errorHandler := helper.UnprocessibleEntity("Invalid JSON body")
+		context.AbortWithStatusJSON(errorHandler.Status(), errorHandler)
+		return
+	}
+
+	userData := context.MustGet("userData").(jwt.MapClaims)
+	userId := int(userData["id"].(float64))
+
+	updatedBalance, err := service.UserService.UpdateBalance(&balance, userId)
+
+	if err != nil {
+		context.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("Your balance has been successfully updated to Rp %d", updatedBalance),
+	})
 }
