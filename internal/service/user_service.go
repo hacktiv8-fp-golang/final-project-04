@@ -10,6 +10,7 @@ import (
 
 type userServiceRepo interface {
 	Register(*model.User) (*model.User, helper.Error)
+	Login(*model.LoginCredential) (string, helper.Error)
 }
 
 type userService struct{}
@@ -36,4 +37,28 @@ func (u *userService) Register(user *model.User) (*model.User, helper.Error) {
 	}
 
 	return userResponse, nil
+}
+
+func (u *userService) Login(userLogin *model.LoginCredential) (string, helper.Error) {
+	if _, err := govalidator.ValidateStruct(userLogin); err != nil {
+		return "", helper.BadRequest(err.Error())
+	}
+
+	user, err := repository.UserRepo.Login(userLogin)
+
+	if err != nil {
+		return "", err
+	}
+
+	if isPasswordCorrect := helper.ComparePassword(userLogin.Password, user.Password); !isPasswordCorrect {
+		return "", helper.Unauthorized("Invalid email/password")
+	}
+
+	token, err := helper.GenerateToken(user.ID, user.Email)
+
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }

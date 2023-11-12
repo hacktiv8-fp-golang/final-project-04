@@ -14,6 +14,7 @@ func StartServer() {
 	userRouter := router.Group("/users")
 	{
 		userRouter.POST("/register", controller.Register)
+		userRouter.POST("/login", controller.Login)
 	}
 
 	router.Run(PORT)

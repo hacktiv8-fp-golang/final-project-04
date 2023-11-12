@@ -15,6 +15,7 @@ func Register(context *gin.Context) {
 	if err := context.ShouldBindJSON(&user); err != nil {
 		errorHandler := helper.UnprocessibleEntity("Invalid JSON body")
 		context.AbortWithStatusJSON(errorHandler.Status(), errorHandler)
+		return
 	}
 
 	user.Role = "customer"
@@ -34,4 +35,23 @@ func Register(context *gin.Context) {
 		"balance": userResponse.Balance,
 		"created_at": userResponse.CreatedAt,
 	})
+}
+
+func Login(context *gin.Context) {
+	var userLogin model.LoginCredential
+
+	if err := context.ShouldBindJSON(&userLogin); err != nil {
+		errorHandler := helper.UnprocessibleEntity("Invalid JSON body")
+		context.AbortWithStatusJSON(errorHandler.Status(), errorHandler)
+		return
+	}
+
+	token, err := service.UserService.Login(&userLogin)
+
+	if err != nil {
+		context.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"token": token})
 }

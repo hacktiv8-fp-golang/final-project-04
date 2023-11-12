@@ -8,6 +8,7 @@ import (
 
 type userDomainRepo interface {
 	Register(*model.User) (*model.User, helper.Error)
+	Login(*model.LoginCredential) (*model.User, helper.Error)
 }
 
 type userRepo struct{}
@@ -24,4 +25,18 @@ func (u *userRepo) Register(user *model.User) (*model.User, helper.Error) {
 	}
 
 	return user, nil
+}
+
+func (u *userRepo) Login(userLogin *model.LoginCredential) (*model.User, helper.Error) {
+	db := database.GetDB()
+
+	var user model.User
+
+	err := db.Where("email = ?", userLogin.Email).First(&user).Error
+
+	if err != nil {
+		return nil, helper.Unauthorized("Invalid email/password")
+	}
+
+	return &user, nil
 }
