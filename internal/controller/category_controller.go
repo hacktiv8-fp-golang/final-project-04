@@ -32,3 +32,35 @@ func CreateCategory(context *gin.Context) {
 		"created_at": categoryResponse.CreatedAt,
 	})
 }
+
+func UpdateCategory(context *gin.Context) {
+	var categoryUpdated model.CategoryUpdate
+
+	if err := context.ShouldBindJSON(&categoryUpdated); err != nil {
+		errorHandler := helper.UnprocessibleEntity("Invalid JSON body")
+
+		context.AbortWithStatusJSON(errorHandler.Status(), errorHandler)
+		return
+	}
+
+	id, err := helper.GetIdParam(context, "categoryId")
+
+	if err != nil {
+		context.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	categoryResponse, err := service.CategoryService.UpdateCategory(&categoryUpdated, id)
+
+	if err != nil {
+		context.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"id": categoryResponse.ID,
+		"type": categoryResponse.Type,
+		"sold_product_amount": categoryResponse.SoldProductAmount,
+		"updated_at": categoryResponse.UpdatedAt,
+	})
+}
