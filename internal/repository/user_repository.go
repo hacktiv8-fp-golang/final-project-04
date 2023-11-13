@@ -9,7 +9,8 @@ import (
 type userDomainRepo interface {
 	Register(*model.User) (*model.User, helper.Error)
 	Login(*model.LoginCredential) (*model.User, helper.Error)
-	UpdateBalance(int, int) (int, helper.Error)
+	GetUserById(int) (*model.User, helper.Error)
+	UpdateBalance(*model.User, int) (int, helper.Error)
 }
 
 type userRepo struct{}
@@ -42,7 +43,20 @@ func (u *userRepo) Login(userLogin *model.LoginCredential) (*model.User, helper.
 	return &user, nil
 }
 
-func (u *userRepo) UpdateBalance(balance int, userId int) (int, helper.Error) {
+func (u *userRepo) GetUserById(userId int) (*model.User, helper.Error) {
+	db := database.GetDB()
+	var user model.User
+
+	err := db.First(&user, userId).Error
+
+	if err != nil {
+		return nil, helper.ParseError(err)
+	}
+
+	return &user, nil
+}
+
+func (u *userRepo) UpdateBalance(userWithUpdatedBalance *model.User, userId int) (int, helper.Error) {
 	db := database.GetDB()
 	var user model.User
 
@@ -52,9 +66,7 @@ func (u *userRepo) UpdateBalance(balance int, userId int) (int, helper.Error) {
 		return 0, helper.ParseError(err)
 	}
 
-	user.Balance += balance
-
-	db.Save(&user)
+	db.Model(&user).Updates(userWithUpdatedBalance)
 
 	return user.Balance, nil
 }

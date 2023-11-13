@@ -69,7 +69,15 @@ func (u *userService) UpdateBalance(balance *model.BalanceUpdate, userId int) (i
 		return 0, helper.BadRequest(err.Error())
 	}
 
-	updatedBalance, err := repository.UserRepo.UpdateBalance(balance.Balance, userId)
+	user, err := repository.UserRepo.GetUserById(userId)
+
+	if err != nil {
+		return 0, err
+	}
+
+	user.Balance += balance.Balance
+
+	updatedBalance, err := repository.UserRepo.UpdateBalance(user, userId)
 
 	if err != nil {
 		return 0, err
