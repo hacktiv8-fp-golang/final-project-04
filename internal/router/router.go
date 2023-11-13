@@ -38,5 +38,12 @@ func StartServer() {
 		productsRouter.DELETE("/:productId")
 	}
 
+	transactionHistoryRouter := router.Group("/transactions")
+	{
+		transactionHistoryRouter.POST("/")
+		transactionHistoryRouter.GET("/my-transactions")
+		transactionHistoryRouter.GET("/user-transactions")
+	}
+
 	router.Run(PORT)
 }

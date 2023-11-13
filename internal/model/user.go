@@ -11,6 +11,7 @@ type User struct {
 	Balance int `gorm:"not null" json:"balance" valid:"range(0|100000000)"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	TransactionHistories []TransactionHistory
 }
 
 type LoginCredential struct {
