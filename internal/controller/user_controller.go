@@ -11,6 +11,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UserRegister godoc
+// @Summary Register a new user
+// @Description Endpoint to register a new user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param model.UserRegister body model.UserRegister true "create user"
+// @Success 201 {object} model.UserRegisterResponse
+// @Failure 400 {object} helper.ErrorResponse "Bad Request"
+// @Failure 404 {object} helper.ErrorResponse "Not Found"
+// @Failure 422 {object} helper.ErrorResponse "Invalid Request"
+//@Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Router /users/register [post]
 func Register(context *gin.Context) {
 	var user model.User
 

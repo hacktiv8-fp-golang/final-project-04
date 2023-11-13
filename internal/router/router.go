@@ -5,10 +5,23 @@ import (
 	"final-project-04/internal/middleware"
 
 	"github.com/gin-gonic/gin"
+	_ "final-project-04/docs"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	swaggerfiles "github.com/swaggo/files"
 )
 
 var PORT = ":8080"
 
+// @Title Toko Belanja API
+// @version 1.0
+// @description API for an e-commerce platform
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email sobercoder@swagger.io
+// @license.name Apache 2.0
+// @license.url https://www.apache.org/licenses/LICENSE-2.0.html
+// @host localhost:8080
+// @BasePath /
 func StartServer() {
 	router := gin.Default()
 
@@ -44,6 +57,8 @@ func StartServer() {
 		transactionHistoryRouter.GET("/my-transactions")
 		transactionHistoryRouter.GET("/user-transactions")
 	}
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	router.Run(PORT)
 }
