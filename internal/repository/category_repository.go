@@ -4,12 +4,13 @@ import (
 	"final-project-04/internal/database"
 	"final-project-04/internal/helper"
 	"final-project-04/internal/model"
+	"fmt"
 )
 
 type categoryDomainRepo interface {
 	CreateCategory(*model.Category) (*model.Category, helper.Error)
 	UpdateCategory(*model.CategoryUpdate, int) (*model.Category, helper.Error)
-	IsCategoryExist(int) bool
+	GetCategoryById(int) (*model.Category, helper.Error)
 }
 
 type categoryRepo struct{}
@@ -44,12 +45,16 @@ func (c *categoryRepo) UpdateCategory(categoryUpdated *model.CategoryUpdate, cat
 	return &category, nil
 }
 
-func (c *categoryRepo) IsCategoryExist(categoryId int) bool {
+func (c *categoryRepo) GetCategoryById(categoryId int) (*model.Category, helper.Error) {
 	db := database.GetDB()
 
 	var category model.Category
 
 	err := db.First(&category, categoryId).Error
 
-	return err == nil
+	if err != nil {
+		return nil, helper.NotFound(fmt.Sprintf("Category with id %d not found", categoryId))
+	}
+
+	return &category, nil
 }

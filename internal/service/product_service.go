@@ -4,7 +4,6 @@ import (
 	"final-project-04/internal/helper"
 	"final-project-04/internal/model"
 	"final-project-04/internal/repository"
-	"fmt"
 
 	"github.com/asaskevich/govalidator"
 )
@@ -26,10 +25,8 @@ func (p *productService) CreateProduct(product *model.Product) (*model.Product, 
 		return nil, helper.BadRequest("The product stock must not be less than 5")
 	}
 
-	isCategoryExist := repository.CategoryRepo.IsCategoryExist(product.CategoryID)
-
-	if !isCategoryExist {
-		return nil, helper.NotFound(fmt.Sprintf("Category with id %+v not found", product.CategoryID))
+	if _, err := repository.CategoryRepo.GetCategoryById(product.CategoryID); err != nil {
+		return nil, err
 	}
 
 	productResponse, err := repository.ProductRepo.CreateProduct(product)
