@@ -23,7 +23,7 @@ func StartDB() {
 		log.Fatal(err.Error())
 	}
 
-	db.Debug().AutoMigrate(model.User{})
+	db.Debug().AutoMigrate(model.User{}, model.Category{}, model.Product{}, model.TransactionHistory{})
 }
 
 func GetDB() *gorm.DB {
