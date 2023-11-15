@@ -9,25 +9,59 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authorization() gin.HandlerFunc {
+func AdminAuthorization() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		userData := context.MustGet("userData").(jwt.MapClaims)
-		userId := int(userData["id"].(float64))
+		userRole := userData["role"].(string)
 
-		db := database.GetDB()
-
-		var user model.User
-
-		err := db.First(&user, userId).Error
-
-		if err != nil {
-			errorHandler := helper.NotFound("Data Not found")
-			context.AbortWithStatusJSON(errorHandler.Status(), errorHandler)
+		if userRole != "admin" {
+			err := helper.Unauthorized("You are not allowed to access this data")
+			context.AbortWithStatusJSON(err.Status(), err)
 			return
 		}
 
-		if user.Role != "admin" {
-			err := helper.Unauthorized("You are not allowed to access this data")
+		context.Next()
+	}
+}
+
+func CategoryAuthorization() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		categoryId, err := helper.GetIdParam(context, "categoryId")
+
+		if err != nil {
+			context.AbortWithStatusJSON(err.Status(), err)
+			return
+		}
+
+		db := database.GetDB()
+		category := model.Category{}
+
+		errMsg := db.First(&category, categoryId).Error
+		if errMsg != nil {
+			err := helper.NotFound("Data not found")
+			context.AbortWithStatusJSON(err.Status(), err)
+			return
+		}
+
+		context.Next()
+	}
+}
+
+func ProductAuthorization() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		productId, err := helper.GetIdParam(context, "productId")
+
+		if err != nil {
+			context.AbortWithStatusJSON(err.Status(), err)
+			return
+		}
+
+		db := database.GetDB()
+		product := model.Product{}
+
+		errMsg := db.First(&product, productId).Error
+		if errMsg != nil {
+			err := helper.NotFound("Data not found")
 			context.AbortWithStatusJSON(err.Status(), err)
 			return
 		}
