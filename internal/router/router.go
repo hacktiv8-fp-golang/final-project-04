@@ -4,10 +4,11 @@ import (
 	"final-project-04/internal/controller"
 	"final-project-04/internal/middleware"
 
-	"github.com/gin-gonic/gin"
 	_ "final-project-04/docs"
-	ginSwagger "github.com/swaggo/gin-swagger"
+
+	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var PORT = ":8080"
@@ -36,19 +37,19 @@ func StartServer() {
 	categoriesRouter := router.Group("/categories")
 	{
 		categoriesRouter.Use(middleware.Authentication())
-		categoriesRouter.POST("/",middleware.Authorization(), controller.CreateCategory)
-		categoriesRouter.GET("/")
-		categoriesRouter.PATCH("/:categoryId", middleware.Authorization(), controller.UpdateCategory)
-		categoriesRouter.DELETE("/:categoryId")
+		categoriesRouter.POST("/", middleware.AdminAuthorization(), controller.CreateCategory)
+		categoriesRouter.GET("/", controller.GetAllCategories)
+		categoriesRouter.PATCH("/:categoryId", middleware.AdminAuthorization(), middleware.CategoryAuthorization(), controller.UpdateCategory)
+		categoriesRouter.DELETE("/:categoryId", middleware.AdminAuthorization(), middleware.CategoryAuthorization(), controller.DeleteCategory)
 	}
 
 	productsRouter := router.Group("/products")
 	{
 		productsRouter.Use(middleware.Authentication())
-		productsRouter.POST("/", middleware.Authorization(), controller.CreateProduct)
-		productsRouter.GET("/")
-		productsRouter.PUT("/:productId")
-		productsRouter.DELETE("/:productId")
+		productsRouter.POST("/", middleware.AdminAuthorization(), controller.CreateProduct)
+		productsRouter.GET("/", controller.GetAllProducts)
+		productsRouter.PUT("/:productId", middleware.AdminAuthorization(), middleware.ProductAuthorization(), controller.UpdateProduct)
+		productsRouter.DELETE("/:productId", middleware.AdminAuthorization(), middleware.ProductAuthorization(), controller.DeleteProduct)
 	}
 
 	transactionHistoryRouter := router.Group("/transactions")

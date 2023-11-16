@@ -22,7 +22,7 @@ import (
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 404 {object} helper.ErrorResponse "Not Found"
 // @Failure 422 {object} helper.ErrorResponse "Invalid Request"
-//@Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Failure 500 {object} helper.ErrorResponse "Server Error"
 // @Router /users/register [post]
 func Register(context *gin.Context) {
 	var user model.User

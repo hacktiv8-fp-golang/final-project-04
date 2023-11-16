@@ -11,6 +11,10 @@ type Category struct {
 	Products []Product
 }
 
+type CategoryCreate struct {
+	Type string `gorm:"not null" json:"type" valid:"required~Product type is required"`
+}
+
 type CategoryUpdate struct {
 	Type string `gorm:"not null" json:"type" valid:"required~Product type is required"`
 }

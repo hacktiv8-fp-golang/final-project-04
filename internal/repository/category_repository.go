@@ -9,8 +9,10 @@ import (
 
 type categoryDomainRepo interface {
 	CreateCategory(*model.Category) (*model.Category, helper.Error)
-	UpdateCategory(*model.CategoryUpdate, int) (*model.Category, helper.Error)
+	GetAllCategories() ([]*model.Category, helper.Error)
 	GetCategoryById(int) (*model.Category, helper.Error)
+	UpdateCategory(*model.CategoryUpdate, int) (*model.Category, helper.Error)
+	DeleteCategory(int) (helper.Error)
 }
 
 type categoryRepo struct{}
@@ -29,6 +31,34 @@ func (c *categoryRepo) CreateCategory(category *model.Category) (*model.Category
 	return category, nil
 }
 
+func (s *categoryRepo) GetAllCategories() ([]*model.Category, helper.Error) {
+	db := database.GetDB()
+	var categories []*model.Category
+
+	err := db.Preload("Products").Find(&categories).Error
+
+	if err != nil {
+		return nil, helper.ParseError(err)
+	}
+
+	return categories, nil
+}
+
+func (c *categoryRepo) GetCategoryById(categoryId int) (*model.Category, helper.Error) {
+	db := database.GetDB()
+
+	var category model.Category
+
+	err := db.First(&category, categoryId).Error
+
+	if err != nil {
+		return nil, helper.NotFound(fmt.Sprintf("Category with id %d not found", categoryId))
+	}
+
+	return &category, nil
+}
+
+
 func (c *categoryRepo) UpdateCategory(categoryUpdated *model.CategoryUpdate, categoryId int) (*model.Category, helper.Error) {
 	db := database.GetDB()
 
@@ -45,16 +75,15 @@ func (c *categoryRepo) UpdateCategory(categoryUpdated *model.CategoryUpdate, cat
 	return &category, nil
 }
 
-func (c *categoryRepo) GetCategoryById(categoryId int) (*model.Category, helper.Error) {
+func (s *categoryRepo) DeleteCategory(categoryId int) helper.Error {
 	db := database.GetDB()
-
 	var category model.Category
 
-	err := db.First(&category, categoryId).Error
+	err := db.Where("id = ?", categoryId).Delete(&category).Error
 
 	if err != nil {
-		return nil, helper.NotFound(fmt.Sprintf("Category with id %d not found", categoryId))
+		return helper.ParseError(err)
 	}
 
-	return &category, nil
+	return nil
 }

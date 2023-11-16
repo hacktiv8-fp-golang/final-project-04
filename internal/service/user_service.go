@@ -55,7 +55,7 @@ func (u *userService) Login(userLogin *model.LoginCredential) (string, helper.Er
 		return "", helper.Unauthorized("Invalid email/password")
 	}
 
-	token, err := helper.GenerateToken(user.ID, user.Email)
+	token, err := helper.GenerateToken(user.ID, user.Email, user.Role)
 
 	if err != nil {
 		return "", err

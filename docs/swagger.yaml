@@ -8,6 +8,116 @@ definitions:
       status:
         type: integer
     type: object
+  model.Category:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/model.Product'
+        type: array
+      sold_product_amount:
+        type: integer
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.CategoryCreate:
+    properties:
+      type:
+        type: string
+    type: object
+  model.CategoryUpdate:
+    properties:
+      type:
+        type: string
+    type: object
+  model.Product:
+    properties:
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      price:
+        type: integer
+      stock:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.ProductCreate:
+    properties:
+      category_id:
+        type: integer
+      price:
+        type: integer
+      stock:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.ProductUpdate:
+    properties:
+      category_id:
+        type: integer
+      price:
+        type: integer
+      stock:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.TransactionHistory:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      product:
+        $ref: '#/definitions/model.Product'
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      total_price:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+      user_id:
+        type: integer
+    type: object
+  model.User:
+    properties:
+      balance:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      role:
+        type: string
+      transactionHistories:
+        items:
+          $ref: '#/definitions/model.TransactionHistory'
+        type: array
+      updated_at:
+        type: string
+    type: object
   model.UserRegister:
     properties:
       email:
@@ -35,6 +145,296 @@ definitions:
 info:
   contact: {}
 paths:
+  /categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories fetched successfully
+          schema:
+            items:
+              $ref: '#/definitions/model.Category'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Get All Categories.
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Category object to be created
+        in: body
+        name: model.Category
+        required: true
+        schema:
+          $ref: '#/definitions/model.CategoryCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Category created successfully
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Creates a new category
+      tags:
+      - Categories
+  /categories/{categoryId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Category ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category deleted successfully
+          schema:
+            $ref: '#/definitions/model.Category'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Delete a Category.
+      tags:
+      - Categories
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Category ID
+        in: path
+        name: categoryId
+        required: true
+        type: integer
+      - description: Category object to be updated
+        in: body
+        name: model.Category
+        required: true
+        schema:
+          $ref: '#/definitions/model.CategoryUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category updated successfully
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Update a Category.
+      tags:
+      - Categories
+  /products:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products fetched successfully
+          schema:
+            items:
+              $ref: '#/definitions/model.Product'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Get All Products.
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Product object to be created
+        in: body
+        name: model.Product
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Creates a new product
+      tags:
+      - Products
+  /products/{productId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            $ref: '#/definitions/model.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Delete a Product.
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      - description: Product object to be updated
+        in: body
+        name: model.Product
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Update a Product.
+      tags:
+      - Products
   /users/register:
     post:
       consumes:
