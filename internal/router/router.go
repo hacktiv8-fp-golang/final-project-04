@@ -11,7 +11,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-var PORT = ":8089"
+var PORT = ":8080"
 
 // @Title Toko Belanja API
 // @version 1.0
