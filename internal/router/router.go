@@ -54,9 +54,10 @@ func StartServer() {
 
 	transactionHistoryRouter := router.Group("/transactions")
 	{
-		transactionHistoryRouter.POST("/")
-		transactionHistoryRouter.GET("/my-transactions")
-		transactionHistoryRouter.GET("/user-transactions")
+		transactionHistoryRouter.Use(middleware.Authentication())
+		transactionHistoryRouter.POST("/", controller.CreateTransaction)
+		transactionHistoryRouter.GET("/my-transactions", controller.GetTransactionsByUserID)
+		transactionHistoryRouter.GET("/user-transactions", middleware.AdminAuthorization(),controller.GetAllTransaction)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

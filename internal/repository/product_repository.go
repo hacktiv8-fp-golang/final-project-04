@@ -11,6 +11,7 @@ type productDomainRepo interface {
 	GetAllProducts() ([]*model.Product, helper.Error)
 	UpdateProduct(*model.ProductUpdate, int) (*model.Product, helper.Error)
 	DeleteProduct(int) (helper.Error)
+	GetProductById(int) (*model.Product, helper.Error)
 }
 
 type productRepo struct{}
@@ -70,4 +71,17 @@ func (s *productRepo) DeleteProduct(productId int) helper.Error {
 	}
 
 	return nil
+}
+
+func (s *productRepo) GetProductById(productId int) (*model.Product, helper.Error){
+	db := database.GetDB()
+	var product model.Product
+
+	err := db.First(&product, productId).Error
+
+	if err != nil {
+		return nil, helper.ParseError(err)
+	}
+
+	return &product, nil
 }
