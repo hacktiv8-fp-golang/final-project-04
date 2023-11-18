@@ -1,6 +1,8 @@
 module final-project-04
 
-go 1.20
+go 1.21
+
+toolchain go1.21.0
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
