@@ -3,6 +3,7 @@ package router
 import (
 	"final-project-04/internal/controller"
 	"final-project-04/internal/middleware"
+	"os"
 
 	_ "final-project-04/docs"
 
@@ -10,8 +11,6 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
-var PORT = ":8080"
 
 // @Title Toko Belanja API
 // @version 1.0
@@ -62,5 +61,7 @@ func StartServer() {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	router.Run(PORT)
+	var PORT = os.Getenv("PORT")
+
+	router.Run(":" +PORT)
 }
