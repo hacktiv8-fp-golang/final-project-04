@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"final-project-04/internal/helper"
-	"final-project-04/internal/model"
-	"final-project-04/internal/service"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/helper"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/model"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/service"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -119,7 +119,7 @@ func GetAllTransaction(context *gin.Context){
 	}
 
 	transactions := make([]gin.H, 0, len(results))
-	
+
 
 	for _, result := range results {
 		transaction := gin.H{

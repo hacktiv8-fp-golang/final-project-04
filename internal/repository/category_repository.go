@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"final-project-04/internal/database"
-	"final-project-04/internal/helper"
-	"final-project-04/internal/model"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/database"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/helper"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/model"
 	"fmt"
 )
 

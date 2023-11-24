@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"final-project-04/internal/helper"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/helper"
 
 	"github.com/gin-gonic/gin"
 )

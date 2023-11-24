@@ -1,11 +1,11 @@
 package router
 
 import (
-	"final-project-04/internal/controller"
-	"final-project-04/internal/middleware"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/controller"
+	"github.com/hacktiv8-fp-golang/final-project-04/internal/middleware"
 	"os"
 
-	_ "final-project-04/docs"
+	_ "github.com/hacktiv8-fp-golang/final-project-04/docs"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
