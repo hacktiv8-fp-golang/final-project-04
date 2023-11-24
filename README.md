@@ -27,9 +27,13 @@
   DB_PORT=Database port (example: 5432)
   DB_NAME=Name of the database to be used (example: postgres)
   DB_SSLMODE=Database SSL mode (example: disable)
+  PORT=Port for the server to run on (example: 8080)
 ```
 6. Run the project
 ```sh
   go run main.go
 ```
 7. The project will be available at http://localhost:8080 by default.
+
+## Deployment
+The API has been deployed and can be accessed [here](https://final-project-04-production.up.railway.app/).
