@@ -14,7 +14,7 @@ import (
 // UserRegister godoc
 // @Summary Register a new user
 // @Description Endpoint to register a new user
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param model.UserRegister body model.UserRegister true "create user"
@@ -52,6 +52,19 @@ func Register(context *gin.Context) {
 	})
 }
 
+// UserLogin godoc
+// @Summary Authenticate a user
+// @Description Endpoint to register a new user
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param model.LoginCredential body model.LoginCredential true "authenticate user"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} helper.ErrorResponse "Bad Request"
+// @Failure 404 {object} helper.ErrorResponse "Not Found"
+// @Failure 422 {object} helper.ErrorResponse "Invalid Request"
+// @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Router /users/login [post]
 func Login(context *gin.Context) {
 	var userLogin model.LoginCredential
 
@@ -71,6 +84,22 @@ func Login(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+// UserTopup godoc
+// @Summary Topup user balance
+// @Description Endpoint to top-up user balance
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer Token"
+// @Param model.User body model.BalanceUpdate true "Amount to top-up"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} helper.ErrorResponse "Bad Request"
+// @Failure 401 {object} helper.ErrorResponse "Unauthorized"
+// @Failure 404 {object} helper.ErrorResponse "Not Found"
+// @Failure 422 {object} helper.ErrorResponse "Invalid Request"
+// @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
+// @Router /users/topup [patch]
 func UpdateBalance(context *gin.Context) {
 	var balance model.BalanceUpdate
 

@@ -14,12 +14,14 @@ import (
 // @Tags Categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param model.Category body model.CategoryCreate true "Category object to be created"
 // @Success 201 {object} model.User "Category created successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /categories [post]
 func CreateCategory(context *gin.Context) {
 	var category model.Category
@@ -50,11 +52,13 @@ func CreateCategory(context *gin.Context) {
 // @Tags Categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} model.Category "Categories fetched successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /categories [get]
 func GetAllCategories(context *gin.Context) {
 	categories, err := service.CategoryService.GetAllCategories()
@@ -72,6 +76,7 @@ func GetAllCategories(context *gin.Context) {
 // @Tags Categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param categoryId path int true "Category ID"
 // @Param model.Category body model.CategoryUpdate true "Category object to be updated"
 // @Success 200 {object} model.User "Category updated successfully"
@@ -79,6 +84,7 @@ func GetAllCategories(context *gin.Context) {
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /categories/{categoryId} [put]
 func UpdateCategory(context *gin.Context) {
 	var categoryUpdated model.CategoryUpdate
@@ -112,12 +118,14 @@ func UpdateCategory(context *gin.Context) {
 // @Tags Categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param categoryId path int true "Category ID"
 // @Success 200 {object} model.Category "Category deleted successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /categories/{categoryId} [delete]
 func DeleteCategory(context *gin.Context) {
 	categoryId, _ := helper.GetIdParam(context, "categoryId")

@@ -15,12 +15,14 @@ import (
 // @Tags Transaction
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param model.TransactionHistory body model.TransactionCreate true "Transaction object to be created"
 // @Success 201 {object} model.TransactionCreateResponse "Transaction created successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /transactions [post]
 func CreateTransaction(context *gin.Context) {
 	var transaction model.TransactionCreate
@@ -54,11 +56,13 @@ func CreateTransaction(context *gin.Context) {
 // @Tags Transaction
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} model.GetTransactionUserResponse "Transactions fetched successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /transactions/my-transactions [get]
 func GetTransactionsByUserID(context *gin.Context){
 	userData := context.MustGet("userData").(jwt.MapClaims)
@@ -103,11 +107,13 @@ func GetTransactionsByUserID(context *gin.Context){
 // @Tags Transaction
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} model.TransactionHistory "Transactions fetched successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /transactions/user-transactions [get]
 func GetAllTransaction(context *gin.Context){
 

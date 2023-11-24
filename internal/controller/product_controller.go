@@ -14,12 +14,14 @@ import (
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param model.Product body model.ProductCreate true "Product object to be created"
 // @Success 201 {object} model.User "Product created successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /products [post]
 func CreateProduct(context *gin.Context) {
 	var product model.Product
@@ -53,11 +55,13 @@ func CreateProduct(context *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} model.Product "Products fetched successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /products [get]
 func GetAllProducts(context *gin.Context) {
 	products, err := service.ProductService.GetAllProducts()
@@ -90,6 +94,7 @@ func GetAllProducts(context *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param productId path int true "Product ID"
 // @Param model.Product body model.ProductUpdate true "Product object to be updated"
 // @Success 200 {object} model.User "Product updated successfully"
@@ -97,6 +102,7 @@ func GetAllProducts(context *gin.Context) {
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /products/{productId} [put]
 func UpdateProduct(context *gin.Context) {
 	var productUpdated model.ProductUpdate
@@ -137,12 +143,14 @@ func UpdateProduct(context *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param productId path int true "Product ID"
 // @Success 200 {object} model.Product "Product deleted successfully"
 // @Failure 400 {object} helper.ErrorResponse "Bad Request"
 // @Failure 401 {object} helper.ErrorResponse "Unauthorized"
 // @Failure 422 {object} helper.ErrorResponse "Unprocessable Entity"
 // @Failure 500 {object} helper.ErrorResponse "Server Error"
+// @Security Bearer
 // @Router /products/{productId} [delete]
 func DeleteProduct(context *gin.Context) {
 	productId, _ := helper.GetIdParam(context, "productId")
